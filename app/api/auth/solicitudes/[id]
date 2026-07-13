@@ -1,0 +1,61 @@
+export const runtime = "nodejs";
+
+import { NextResponse } from "next/server";
+import { solicitudes } from "@/lib/solicitudesStore";
+
+export async function GET(
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id } = await context.params;
+
+    const authHeader = req.headers.get("authorization");
+    const role = req.headers.get("role");
+    const userId = req.headers.get("userid");
+
+    if (!authHeader) {
+      return NextResponse.json(
+        { message: "No autorizado" },
+        { status: 401 }
+      );
+    }
+
+    const solicitud = solicitudes.find(
+      (s) => s.id === id
+    );
+
+    if (!solicitud) {
+      return NextResponse.json(
+        { message: "Solicitud no encontrada" },
+        { status: 404 }
+      );
+    }
+
+    // Admin puede ver cualquiera
+    if (role === "admin") {
+      return NextResponse.json(
+        { solicitud },
+        { status: 200 }
+      );
+    }
+
+    // Usuario solo puede ver la suya
+    if (solicitud.userId !== userId) {
+      return NextResponse.json(
+        { message: "Acceso prohibido" },
+        { status: 403 }
+      );
+    }
+
+    return NextResponse.json(
+      { solicitud },
+      { status: 200 }
+    );
+  } catch (error) {
+    return NextResponse.json(
+      { message: "Error al obtener solicitud" },
+      { status: 500 }
+    );
+  }
+}
