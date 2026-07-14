@@ -3,29 +3,28 @@ const cors = require('cors');
 const app = express();
 const PORT = 3000;
 
-// Habilitar CORS para permitir peticiones desde tu GitHub Pages (u otros orígenes)
+// Habilitar CORS para permitir llamadas externas desde tu dominio de GitHub Pages
 app.use(cors());
 app.use(express.json());
 
-// Base de datos volátil en memoria local
-let solicitudesDb = [
-    { usuario: "sistema.automatico@empresa.com", inicio: 1, fin: 3, tokenOrder: 2 },
-    { usuario: "empleado.uno@empresa.com", inicio: 3, fin: 6, tokenOrder: 1 }
+// Base de datos volátil local en memoria
+let solicitudesBase = [
+    { usuario: "admin_test", articulo: "Licencia Cloud Premium", cantidad: 2, precioTotal: "500.00", timestamp: "12:00:00" }
 ];
 
-// GET: Obtener todas las solicitudes
+// Endpoint GET solicitudes
 app.get('/solicitudes', (req, res) => {
-    console.log("Petición GET recibida. Enviando solicitudes...");
-    res.json(solicitudesDb);
+    console.log("Soporte solicitó lectura de registros.");
+    res.json(solicitudesBase);
 });
 
-// POST: Registrar una nueva solicitud
+// Endpoint POST solicitudes
 app.post('/solicitudes', (req, res) => {
     const nuevaSolicitud = req.body;
-    console.log("Petición POST recibida:", nuevaSolicitud);
+    console.log("Nueva solicitud de compra entrante:", nuevaSolicitud);
     
-    if (nuevaSolicitud && nuevaSolicitud.usuario) {
-        solicitudesDb.push(nuevaSolicitud);
+    if (nuevaSolicitud && nuevaSolicitud.usuario && nuevaSolicitud.articulo) {
+        solicitudesBase.push(nuevaSolicitud);
         res.status(201).json(nuevaSolicitud);
     } else {
         res.status(400).json({ error: "Datos de solicitud inválidos" });
@@ -33,5 +32,5 @@ app.post('/solicitudes', (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Servidor de DAA corriendo localmente en http://localhost:${PORT}`);
+    console.log(`Servidor de pruebas corriendo de forma segura en: http://localhost:${PORT}`);
 });
