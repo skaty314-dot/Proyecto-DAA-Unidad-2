@@ -26,5 +26,20 @@
   },
   "allowScripts": {
     "unrs-resolver@1.12.2": true
-  }
+  },
+  "description": "",
+  "main": "next.config.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skaty314-dot/Proyecto-DAA-Unidad-2.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/skaty314-dot/Proyecto-DAA-Unidad-2/issues"
+  },
+  "homepage": "https://github.com/skaty314-dot/Proyecto-DAA-Unidad-2#readme"
 }
